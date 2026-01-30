@@ -182,6 +182,14 @@
                         <div class="relative bg-[#F2F5F4] aspect-[4/5] rounded-sm overflow-hidden mb-4 group shadow-sm">
                             <!-- HERO IMAGE: Product hero with ingredients -->
                             <img id="main-product-image" src="images/slide-1-hero.png" alt="DUALIS System" class="object-contain w-full h-full group-hover:scale-105 transition duration-[1.5s] ease-in-out">
+
+                            <!-- Left/Right Navigation Arrows -->
+                            <button onclick="prevSlide()" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-md transition opacity-0 group-hover:opacity-100">
+                                <i class="fas fa-chevron-left text-[#2A3B34] text-sm"></i>
+                            </button>
+                            <button onclick="nextSlide()" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-md transition opacity-0 group-hover:opacity-100">
+                                <i class="fas fa-chevron-right text-[#2A3B34] text-sm"></i>
+                            </button>
                         </div>
 
                         <!-- Thumbnails - 8 slides carousel -->
@@ -949,15 +957,47 @@
             });
         }
 
+        // Carousel slides array
+        const slides = [
+            'images/slide-1-hero.png',
+            'images/slide-2-ba-length.png',
+            'images/slide-3-ba-curls.png',
+            'images/slide-4-problem.png',
+            'images/slide-5-reframe.png',
+            'images/slide-6-revolution.png',
+            'images/slide-7-benefits.png',
+            'images/slide-8-guarantee.png'
+        ];
+        let currentSlideIndex = 0;
+
         function changeMainImage(src) {
             document.getElementById('main-product-image').src = src;
-            // Update thumbnail borders
-            document.querySelectorAll('.grid.grid-cols-5 button').forEach(btn => {
+            currentSlideIndex = slides.indexOf(src);
+            updateThumbnailBorders();
+        }
+
+        function updateThumbnailBorders() {
+            const buttons = document.querySelectorAll('.grid.grid-cols-4.md\\:grid-cols-8 button');
+            buttons.forEach((btn, index) => {
                 btn.classList.remove('border-[#2A3B34]');
                 btn.classList.add('border-transparent');
+                if (index === currentSlideIndex) {
+                    btn.classList.remove('border-transparent');
+                    btn.classList.add('border-[#2A3B34]');
+                }
             });
-            event.currentTarget.classList.remove('border-transparent');
-            event.currentTarget.classList.add('border-[#2A3B34]');
+        }
+
+        function prevSlide() {
+            currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
+            document.getElementById('main-product-image').src = slides[currentSlideIndex];
+            updateThumbnailBorders();
+        }
+
+        function nextSlide() {
+            currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+            document.getElementById('main-product-image').src = slides[currentSlideIndex];
+            updateThumbnailBorders();
         }
     </script>
 </body>
